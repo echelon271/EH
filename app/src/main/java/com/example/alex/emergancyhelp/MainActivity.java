@@ -4,15 +4,49 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity {
+
+    private ToggleButton btn1,btn2;
+    private Button btnSend;
+
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btn1 = (ToggleButton) findViewById(R.id.btn_phone_book);
+        btn2 = (ToggleButton) findViewById(R.id.btn_get_location);
+        btnSend = (Button) findViewById(R.id.btnSend);
+
+        btn2.isEnabled(false);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Override
