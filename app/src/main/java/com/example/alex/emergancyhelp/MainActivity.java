@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
@@ -27,11 +29,25 @@ public class MainActivity extends Activity {
         btn1 = (ToggleButton) findViewById(R.id.btn_phone_book);
         btn2 = (ToggleButton) findViewById(R.id.btn_get_location);
         btnSend = (Button) findViewById(R.id.btnSend);
-
-        btn2.isEnabled(false);
     }
 
+    public void getPhoneBook(View view){
+        Toast.makeText(this,"getDeviceLocation",Toast.LENGTH_SHORT).show();
+        btn2.setEnabled(true);
+    }
 
+    public void getDeviceLocation(View view){
+        Toast.makeText(this,"getDeviceLocation",Toast.LENGTH_SHORT).show();
+        btnSend.setEnabled(true);
+    }
+
+    public void initiateRequest(View view){
+        Toast.makeText(this,"initiateRequest",Toast.LENGTH_SHORT).show();
+        btn2.setEnabled(false);
+        btnSend.setEnabled(false);
+        btn1.setChecked(false);
+        btn2.setChecked(false);
+    }
 
 
 
