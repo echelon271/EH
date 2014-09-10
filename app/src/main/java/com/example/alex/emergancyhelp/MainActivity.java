@@ -1,6 +1,10 @@
 package com.example.alex.emergancyhelp;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.location.GpsStatus;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,9 +16,13 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 
+
+    private static final int CHECK_SERVICES = 1;
+    private Context mContext = MainActivity.this;
+    private LocationManager lm;
     private ToggleButton btn1,btn2;
     private Button btnSend;
-
+    private boolean isGPS,isNetwork,isPassive = false;
 
 
 
@@ -25,14 +33,55 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        lm  = (LocationManager) getSystemService(LOCATION_SERVICE);
         btn1 = (ToggleButton) findViewById(R.id.btn_phone_book);
         btn2 = (ToggleButton) findViewById(R.id.btn_get_location);
         btnSend = (Button) findViewById(R.id.btnSend);
+
+
+        if(softWarmServices() == true){
+            warmServices();
+        } else checkServices();
+
+
+    }
+
+
+    protected void warmServices(){
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 1.0f, (android.location.LocationListener) this);
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000L, 1.0f, (android.location.LocationListener) this);
+        lm.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000L, 1.0f, (android.location.LocationListener) this);
+
+    }
+
+    private boolean softWarmServices(){
+        isGPS = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isNetwork = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        isPassive = lm.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
+        if(isGPS == true || isNetwork == true || isPassive == true){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkServices(){
+        if (isGPS == true){
+            Toast.makeText(this,"Using GPS location", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (isNetwork == true){
+            Toast.makeText(this,"Using Network location", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (isPassive == true){
+            Toast.makeText(this,"Using Passive location", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), CHECK_SERVICES);
+        }
+        return false;
     }
 
     public void getPhoneBook(View view){
-        Toast.makeText(this,"getDeviceLocation",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"getPhoneBook",Toast.LENGTH_SHORT).show();
         btn2.setEnabled(true);
     }
 
